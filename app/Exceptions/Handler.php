@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use \Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Arr;
 
 class Handler extends ExceptionHandler
 {
@@ -54,10 +55,9 @@ class Handler extends ExceptionHandler
         return parent::render($request, $exception);
     }
 
-    protected function unauthenticated(
-        $request,
-        AuthenticationException $exception)
+    protected function unauthenticated($request,AuthenticationException $exception)
     {
-        return response('oi');
+        $guard = Arr::first($exception->guards());
+        return response('oi'.$guard);
     }
 }
